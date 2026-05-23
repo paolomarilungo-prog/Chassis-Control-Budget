@@ -228,12 +228,17 @@ else:
 
         st.markdown("---")
         
-        # Selezione Centraline Coinvolte
-        st.session_state.project["selected_ecus"] = st.multiselect(
-            "Centraline Coinvolte nel Progetto",
-            st.session_state.portfolio_ecu,
-            default=st.session_state.project["selected_ecus"]
-        )
+       # Filtriamo i default per assicurarci che contengano solo ECU ancora esistenti nel portfolio
+disponibili_e_selezionate = [
+    ecu for ecu in st.session_state.project["selected_ecus"] 
+    if ecu in st.session_state.portfolio_ecu
+]
+
+st.session_state.project["selected_ecus"] = st.multiselect(
+    "Centraline Coinvolte nel Progetto",
+    options=st.session_state.portfolio_ecu,
+    default=disponibili_e_selezionate
+)
         
         st.session_state.project["premesse"] = st.text_area("Premesse di Progetto / Note operative", value=st.session_state.project["premesse"])
 
